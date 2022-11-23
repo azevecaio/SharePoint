@@ -1,0 +1,22 @@
+//Sharepoint site
+$adminSiteUrl = "https://tenant-admin.sharepoint.com/"
+$siteUrl = "https://tenant.sharepoint.com/sites/sitename"
+
+//Login
+Connect-SPOService $adminSiteUrl
+
+//List names on origin site that you want to copy
+$relativeListUrls = "/lists/listname"
+
+//Extract the site script
+ $extracted = Get-SPOSiteScriptFromWeb –WebUrl $siteUrl -IncludeTheme -IncludeBranding -IncludeSiteExternalSharingCapability –IncludeRegionalSettings -IncludeLinksToExportedItems –IncludedLists $relativeListUrls
+
+//Creating site template on content extracted
+Add-SPOSiteScript  -Title "Site Template" `
+    -Description "Site template" `
+    -Content $extracted
+   
+ //Get site ID
+   
+//Add Design to site based on site ID
+Add-SPOSiteDesign -Title "Custom Template" -WebTemplate "64" -SiteScripts "0d8ed495-9135-4ae5-b918-36b30ec6a06f" -Description "Applying Team site"
